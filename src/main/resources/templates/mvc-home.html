@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+
+<html xmlns:th = "http://thymeleaf.org"
+	  xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity4">	
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+
+	<title>Tasks</title>
+</head>
+<style>
+form {float:left; 
+	  margin:1px;
+	  padding:1px;
+	}
+
+</style>
+
+<body>
+<div class="container">
+
+	<h3>
+	<label th:text="${dayOfWeek}" ></label>'s tasks
+	</h3>
+	
+	 <!--Day selector -->
+	<select class="btn btn-dark" onchange="this.options[this.selectedIndex].value && (window.location = this.options[this.selectedIndex].value);">
+	<option value="" selected disabled hidden="hidden">Choose day</option>
+     <option value="0">Sunday</option>
+     <option value="1">Monday</option>
+     <option value="2">Tuesday</option>
+     <option value="3">Wednesday</option>
+     <option value="4">Thursday</option>
+     <option value="5">Friday</option>
+     <option value="6">Saturday</option>
+	</select>
+	<hr>
+	<!--Create task button -->
+	<div  th:if="${#request.isUserInRole('ADMIN')}">
+	<form method="GET" th:action="@{'/task/create/'}">
+    <button type="submit" name="submit"  class="btn btn-dark" >Create new task</button>
+    </form> 
+    </div>
+	<!--Tasks Table -->
+	<table class="table table-bordered table-striped">
+		<thead class="thead-dark">
+			<tr>
+				<th>Title</th>
+				<th>Description</th>
+				<th>Status</th>
+				<th>Change Status</th>
+				<th th:if="${#request.isUserInRole('ADMIN')}">Actions</th>
+			</tr>
+		</thead>
+		
+		<tbody>
+			<tr th:each="tempTask : ${tasks}">
+			<td th:text="${tempTask.title}" style="vertical-align: middle;" />	
+			<td th:text="${tempTask.description}" style="vertical-align: middle;" />	
+			<td th:text="${tempTask.status}" style="vertical-align: middle;"/>
+			<td>
+				<form method="POST" th:action="@{'/task/changeStatus/' + ${tempTask.Id}}">
+            		<button type="submit" name="submit" value="value" class="btn btn-dark">change</button>
+        		</form> 
+			</td>				
+			<td th:if="${#request.isUserInRole('ADMIN')}">
+				<form method="POST" th:action="@{'/task/update/' + ${tempTask.Id}}">
+            		<button type="submit" name="submit" value="value" class="btn btn-dark">Update</button>
+        		</form> 
+        		<form method="POST" th:action="@{'/task/delete/' + ${tempTask.Id}}">
+            		<button type="submit" name="submit" value="value" class="btn btn-dark">Delete</button>
+        		</form> 
+			</td>	
+		</tbody>		
+	</table>
+	<hr>
+        <form th:action="@{/logout}" method="post" >
+            <input type="submit" value="Sign Out" class="btn btn-dark"/>
+        </form>
+</div>
+
+ 
+</body>

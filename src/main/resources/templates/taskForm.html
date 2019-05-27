@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html xmlns:th = "http://thymeleaf.org">
+<head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
+
+	<title>Task Form</title>
+</head>
+
+
+
+<body>
+<div class="container">
+
+<form  th:action="@{/task/saveTask}" th:object="${task}" method="POST">
+<h3>Task Form</h3>
+<hr>
+<!--Day Selector -->
+<div class="input-group-prepend" >
+    <h3 style="margin-right: 10px">Day of week</h3>
+	<select class="btn btn-dark" th:field="*{dayOfWeek}" >
+     <option value="0" selected>Sunday</option>
+     <option value="1">Monday</option>
+     <option value="2">Tuesday</option>
+     <option value="3">Wednesday</option>
+     <option value="4">Thursday</option>
+     <option value="5">Friday</option>
+     <option value="6">Saturday</option>
+	</select>
+	</div>
+	<hr>
+	<!--Data for binding object -->
+	<input id="id" th:field="*{id}" hidden="hidden"/>
+	<input id="status" th:field="*{status}" hidden="hidden"/>
+	<!--  title input --> 
+	<div class="input-group mb-3">
+  		<div class="input-group-prepend">
+    		<span class="input-group-text" id="basic-addon1">Title</span>
+  		</div>
+  		<input type="text" class="form-control" placeholder="Title" aria-label="Title" th:field="*{title}">
+	</div>
+
+	<!-- description inout -->
+	<div class="input-group">
+ 		<div class="input-group-prepend">
+    		<span class="input-group-text">Description</span>
+  		</div>
+  		<textarea class="form-control" aria-label="Description" th:field="*{description}"></textarea>
+	</div>
+	
+	<hr>
+	<!-- save button -->
+	<input type="submit" class="btn btn-dark" value="Save task"/> 
+	</form>
+	<hr>
+	<!--back button -->
+    <input th:action="action" type="button" value="Back" class="btn btn-dark" onclick="history.go(-1);" />
+        		
+</div>
+
+</body>
